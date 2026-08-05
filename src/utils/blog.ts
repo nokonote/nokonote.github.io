@@ -34,6 +34,11 @@ export const tripStyleLabels: Record<string, string> = {
 	friends: '友達旅',
 };
 
+export const tripStyleIcons: Record<string, string> = {
+	solo: '🧍',
+	friends: '👯',
+};
+
 export function formatDate(date: Date): string {
 	return date.toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' });
 }

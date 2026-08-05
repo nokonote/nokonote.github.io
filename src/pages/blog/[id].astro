@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
-import { categoryLabels, categoryIcons, categoryColors, tripStyleLabels, formatDate } from '../../utils/blog';
+import { categoryLabels, categoryIcons, categoryColors, tripStyleLabels, tripStyleIcons, formatDate } from '../../utils/blog';
 
 export async function getStaticPaths() {
 	const posts = await getCollection('blog');
@@ -14,33 +14,42 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = await render(post);
 const colors = categoryColors[post.data.category];
+const hero = post.data.heroImage;
+const heroStyle = hero
+	? `--from:${colors.from}; --to:${colors.to}; background-image: linear-gradient(180deg, rgba(30,20,10,0.15), rgba(30,20,10,0.65)), url(${hero.src});`
+	: `--from:${colors.from}; --to:${colors.to};`;
 ---
 
 <Layout title={`${post.data.title} | 旅ブログ`} description={post.data.description}>
 	<main id="main">
 		<article>
-			<header class="hero" style={`--from:${colors.from}; --to:${colors.to};`}>
+			<header class:list={['hero', { 'has-photo': hero }]} style={heroStyle}>
 				<div class="hero-inner">
 					<a class="back" href="/blog/">← 記事一覧に戻る</a>
 					<p class="category">{categoryIcons[post.data.category]} {categoryLabels[post.data.category]}</p>
 					<h1>{post.data.title}</h1>
 					<p class="meta">
-						<time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
-						<span class="badge">{tripStyleLabels[post.data.tripStyle]}</span>
+						<time datetime={post.data.pubDate.toISOString()}>📅 {formatDate(post.data.pubDate)}</time>
+						<span class="badge">{tripStyleIcons[post.data.tripStyle]} {tripStyleLabels[post.data.tripStyle]}</span>
 					</p>
 				</div>
+				{hero && (
+					<p class="hero-credit">
+						📷 Photo by <a href={hero.credit.url}>{hero.credit.name}</a> on {hero.credit.source}
+					</p>
+				)}
 			</header>
 
 			<div class="content-wrap">
 				{post.data.tags.length > 0 && (
 					<p class="tags">
-						{post.data.tags.map((tag) => <span class="tag">#{tag}</span>)}
+						{post.data.tags.map((tag) => <span class="tag">🏷️ {tag}</span>)}
 					</p>
 				)}
 				<div class="content">
 					<Content />
 				</div>
-				<p class="back back-bottom"><a href="/blog/">← 記事一覧に戻る</a></p>
+				<p class="back back-bottom"><a href="/blog/">🗺️ 記事一覧に戻る</a></p>
 			</div>
 		</article>
 	</main>
@@ -49,8 +58,15 @@ const colors = categoryColors[post.data.category];
 <style>
 	.hero {
 		background: linear-gradient(135deg, var(--from), var(--to));
+		background-size: cover;
+		background-position: center;
 		color: #fff;
 		padding: 3rem 1.25rem 3.5rem;
+		position: relative;
+	}
+
+	.hero.has-photo {
+		padding-bottom: 4.25rem;
 	}
 
 	.hero-inner {
@@ -79,6 +95,7 @@ const colors = categoryColors[post.data.category];
 		margin: 0 0 0.75rem;
 		font-size: 2rem;
 		line-height: 1.5;
+		text-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
 	}
 
 	.hero .meta {
@@ -93,6 +110,20 @@ const colors = categoryColors[post.data.category];
 		background: rgba(255, 255, 255, 0.25);
 		border-radius: 999px;
 		padding: 0.15rem 0.7rem;
+	}
+
+	.hero-credit {
+		position: absolute;
+		right: 1.25rem;
+		bottom: 0.75rem;
+		margin: 0;
+		font-size: 0.7rem;
+		color: rgba(255, 255, 255, 0.8);
+	}
+
+	.hero-credit a {
+		color: #fff;
+		text-decoration: underline;
 	}
 
 	.content-wrap {
@@ -153,6 +184,10 @@ const colors = categoryColors[post.data.category];
 		margin-bottom: 0.4rem;
 	}
 
+	.content :global(li)::marker {
+		color: var(--color-accent);
+	}
+
 	.content :global(strong) {
 		color: var(--color-accent-dark);
 	}
@@ -167,6 +202,30 @@ const colors = categoryColors[post.data.category];
 		background: var(--color-bg-alt);
 		border-radius: var(--radius-sm);
 		color: var(--color-text-muted);
+	}
+
+	.content :global(figure.post-image) {
+		margin: 2rem 0;
+	}
+
+	.content :global(figure.post-image img) {
+		width: 100%;
+		height: auto;
+		border-radius: var(--radius-md);
+		box-shadow: var(--shadow-md);
+		display: block;
+	}
+
+	.content :global(figure.post-image figcaption) {
+		margin-top: 0.5rem;
+		font-size: 0.75rem;
+		color: var(--color-text-muted);
+		text-align: center;
+	}
+
+	.content :global(figure.post-image figcaption a) {
+		color: var(--color-text-muted);
+		text-decoration: underline;
 	}
 
 	.back-bottom {

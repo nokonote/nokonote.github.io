@@ -15,6 +15,18 @@ const blog = defineCollection({
     // packing: 持ち物・準備リスト / gourmet: グルメ・ご当地グルメ特集
     // tips: 一人旅/友達旅ならではのTips / essay: 体験談風エッセイ
     category: z.enum(['spot', 'itinerary', 'budget', 'packing', 'gourmet', 'tips', 'essay']),
+    // 記事のヒーロー画像（Unsplash/Pexelsなど商用利用可の写真を想定）
+    heroImage: z
+      .object({
+        src: z.string(),
+        alt: z.string(),
+        credit: z.object({
+          name: z.string(),
+          url: z.string().url(),
+          source: z.string(),
+        }),
+      })
+      .optional(),
   }),
 });
 

@@ -1,6 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import { categoryLabels, categoryIcons, categoryColors, tripStyleLabels, formatDate } from '../utils/blog';
+import { categoryLabels, categoryIcons, categoryColors, tripStyleLabels, tripStyleIcons, formatDate } from '../utils/blog';
 
 interface Props {
 	post: CollectionEntry<'blog'>;
@@ -8,17 +8,18 @@ interface Props {
 
 const { post } = Astro.props;
 const colors = categoryColors[post.data.category];
+const hero = post.data.heroImage;
 ---
 
 <li class="post-card" style={`--from:${colors.from}; --to:${colors.to};`}>
 	<a href={`/blog/${post.id}/`}>
-		<div class="card-banner">
-			<span class="card-icon">{categoryIcons[post.data.category]}</span>
+		<div class="card-banner" style={hero ? `background-image: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.35)), url(${hero.src});` : undefined}>
+			{!hero && <span class="card-icon">{categoryIcons[post.data.category]}</span>}
 		</div>
 		<div class="card-body">
 			<p class="meta">
-				<time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
-				<span class="badge">{tripStyleLabels[post.data.tripStyle]}</span>
+				<time datetime={post.data.pubDate.toISOString()}>📅 {formatDate(post.data.pubDate)}</time>
+				<span class="badge">{tripStyleIcons[post.data.tripStyle]} {tripStyleLabels[post.data.tripStyle]}</span>
 			</p>
 			<h3>{post.data.title}</h3>
 			<p class="category">{categoryIcons[post.data.category]} {categoryLabels[post.data.category]}</p>
@@ -57,7 +58,9 @@ const colors = categoryColors[post.data.category];
 
 	.card-banner {
 		background: linear-gradient(135deg, var(--from), var(--to));
-		height: 96px;
+		background-size: cover;
+		background-position: center;
+		height: 140px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
