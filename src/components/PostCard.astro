@@ -1,0 +1,126 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { categoryLabels, categoryIcons, categoryColors, tripStyleLabels, formatDate } from '../utils/blog';
+
+interface Props {
+	post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const colors = categoryColors[post.data.category];
+---
+
+<li class="post-card" style={`--from:${colors.from}; --to:${colors.to};`}>
+	<a href={`/blog/${post.id}/`}>
+		<div class="card-banner">
+			<span class="card-icon">{categoryIcons[post.data.category]}</span>
+		</div>
+		<div class="card-body">
+			<p class="meta">
+				<time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+				<span class="badge">{tripStyleLabels[post.data.tripStyle]}</span>
+			</p>
+			<h3>{post.data.title}</h3>
+			<p class="category">{categoryIcons[post.data.category]} {categoryLabels[post.data.category]}</p>
+			<p class="description">{post.data.description}</p>
+			{post.data.tags.length > 0 && (
+				<p class="tags">
+					{post.data.tags.slice(0, 4).map((tag) => <span class="tag">#{tag}</span>)}
+				</p>
+			)}
+		</div>
+	</a>
+</li>
+
+<style>
+	.post-card {
+		list-style: none;
+	}
+
+	.post-card a {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		text-decoration: none;
+		color: inherit;
+		background: var(--color-surface);
+		border-radius: var(--radius-md);
+		overflow: hidden;
+		box-shadow: var(--shadow-sm);
+		transition: transform 0.2s ease, box-shadow 0.2s ease;
+	}
+
+	.post-card a:hover {
+		transform: translateY(-4px);
+		box-shadow: var(--shadow-md);
+	}
+
+	.card-banner {
+		background: linear-gradient(135deg, var(--from), var(--to));
+		height: 96px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.card-icon {
+		font-size: 2.5rem;
+		filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+	}
+
+	.card-body {
+		padding: 1.25rem 1.35rem 1.5rem;
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+	}
+
+	.meta {
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
+		margin: 0 0 0.5rem;
+		font-size: 0.8rem;
+		color: var(--color-text-muted);
+	}
+
+	.badge {
+		background: var(--color-bg-alt);
+		color: var(--color-accent-dark);
+		border-radius: 999px;
+		padding: 0.15rem 0.65rem;
+		font-weight: 500;
+	}
+
+	h3 {
+		margin: 0 0 0.35rem;
+		font-size: 1.15rem;
+		line-height: 1.5;
+	}
+
+	.category {
+		margin: 0 0 0.6rem;
+		font-size: 0.8rem;
+		font-weight: 500;
+		color: var(--color-text-muted);
+	}
+
+	.description {
+		margin: 0 0 0.75rem;
+		font-size: 0.9rem;
+		color: var(--color-text);
+		flex: 1;
+	}
+
+	.tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+		margin: 0;
+	}
+
+	.tag {
+		font-size: 0.75rem;
+		color: var(--color-sky);
+	}
+</style>

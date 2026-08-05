@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
-import { categoryLabels, tripStyleLabels, formatDate } from '../../utils/blog';
+import { categoryLabels, categoryIcons, categoryColors, tripStyleLabels, formatDate } from '../../utils/blog';
 
 export async function getStaticPaths() {
 	const posts = await getCollection('blog');
@@ -13,92 +13,179 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+const colors = categoryColors[post.data.category];
 ---
 
 <Layout title={`${post.data.title} | 旅ブログ`} description={post.data.description}>
-	<main>
-		<p class="back"><a href="/blog/">← 記事一覧に戻る</a></p>
+	<main id="main">
 		<article>
-			<header>
-				<h1>{post.data.title}</h1>
-				<p class="meta">
-					<time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
-					<span class="badge">{categoryLabels[post.data.category]}</span>
-					<span class="badge">{tripStyleLabels[post.data.tripStyle]}</span>
-				</p>
+			<header class="hero" style={`--from:${colors.from}; --to:${colors.to};`}>
+				<div class="hero-inner">
+					<a class="back" href="/blog/">← 記事一覧に戻る</a>
+					<p class="category">{categoryIcons[post.data.category]} {categoryLabels[post.data.category]}</p>
+					<h1>{post.data.title}</h1>
+					<p class="meta">
+						<time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+						<span class="badge">{tripStyleLabels[post.data.tripStyle]}</span>
+					</p>
+				</div>
+			</header>
+
+			<div class="content-wrap">
 				{post.data.tags.length > 0 && (
 					<p class="tags">
 						{post.data.tags.map((tag) => <span class="tag">#{tag}</span>)}
 					</p>
 				)}
-			</header>
-			<div class="content">
-				<Content />
+				<div class="content">
+					<Content />
+				</div>
+				<p class="back back-bottom"><a href="/blog/">← 記事一覧に戻る</a></p>
 			</div>
 		</article>
 	</main>
 </Layout>
 
 <style>
-	main {
+	.hero {
+		background: linear-gradient(135deg, var(--from), var(--to));
+		color: #fff;
+		padding: 3rem 1.25rem 3.5rem;
+	}
+
+	.hero-inner {
 		max-width: 720px;
 		margin: 0 auto;
-		padding: 2rem 1rem;
-		font-family: system-ui, sans-serif;
 	}
 
-	.back a {
-		color: #666;
+	.hero .back {
+		color: rgba(255, 255, 255, 0.85);
 		text-decoration: none;
-		font-size: 0.9rem;
+		font-size: 0.875rem;
 	}
 
-	.back a:hover {
+	.hero .back:hover {
 		text-decoration: underline;
 	}
 
-	header {
-		margin-bottom: 2rem;
+	.hero .category {
+		margin: 1.25rem 0 0.5rem;
+		font-weight: 500;
+		font-size: 0.9rem;
+		opacity: 0.95;
 	}
 
-	h1 {
-		margin: 0.5rem 0;
+	.hero h1 {
+		margin: 0 0 0.75rem;
+		font-size: 2rem;
+		line-height: 1.5;
 	}
 
-	.meta {
+	.hero .meta {
 		display: flex;
-		flex-wrap: wrap;
 		align-items: center;
-		gap: 0.5rem;
-		color: #666;
-		font-size: 0.875rem;
-		margin: 0 0 0.5rem;
+		gap: 0.6rem;
+		margin: 0;
+		font-size: 0.9rem;
 	}
 
-	.badge {
-		background: #f0f0f0;
+	.hero .badge {
+		background: rgba(255, 255, 255, 0.25);
 		border-radius: 999px;
-		padding: 0.15rem 0.6rem;
+		padding: 0.15rem 0.7rem;
+	}
+
+	.content-wrap {
+		max-width: 720px;
+		margin: -1.75rem auto 0;
+		background: var(--color-surface);
+		border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+		padding: 2.5rem 1.75rem 3.5rem;
+		box-shadow: var(--shadow-lg);
+		position: relative;
 	}
 
 	.tags {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 0.5rem;
-		margin: 0;
+		margin: 0 0 1.75rem;
+	}
+
+	.tag {
 		font-size: 0.8rem;
-		color: #888;
+		color: var(--color-sky);
+		background: var(--color-bg-alt);
+		border-radius: 999px;
+		padding: 0.15rem 0.7rem;
 	}
 
 	.content {
-		line-height: 1.8;
+		font-size: 1.05rem;
+		line-height: 1.9;
+		color: var(--color-text);
 	}
 
 	.content :global(h2) {
-		margin-top: 2rem;
+		margin: 2.5rem 0 1rem;
+		padding-left: 0.85rem;
+		border-left: 6px solid var(--color-accent);
+		font-size: 1.4rem;
 	}
 
 	.content :global(h3) {
-		margin-top: 1.5rem;
+		margin: 1.75rem 0 0.75rem;
+		font-size: 1.15rem;
+		color: var(--color-accent-dark);
+	}
+
+	.content :global(p) {
+		margin: 0 0 1.25rem;
+	}
+
+	.content :global(ul),
+	.content :global(ol) {
+		margin: 0 0 1.25rem;
+		padding-left: 1.5rem;
+	}
+
+	.content :global(li) {
+		margin-bottom: 0.4rem;
+	}
+
+	.content :global(strong) {
+		color: var(--color-accent-dark);
+	}
+
+	.content :global(a) {
+		color: var(--color-sky);
+	}
+
+	.content :global(blockquote) {
+		margin: 0 0 1.25rem;
+		padding: 0.75rem 1.25rem;
+		background: var(--color-bg-alt);
+		border-radius: var(--radius-sm);
+		color: var(--color-text-muted);
+	}
+
+	.back-bottom {
+		margin-top: 3rem;
+		text-align: center;
+	}
+
+	.back-bottom a {
+		display: inline-block;
+		text-decoration: none;
+		color: var(--color-accent-dark);
+		font-weight: 500;
+		border: 1px solid var(--color-border);
+		border-radius: 999px;
+		padding: 0.6rem 1.5rem;
+		transition: background 0.15s ease;
+	}
+
+	.back-bottom a:hover {
+		background: var(--color-bg-alt);
 	}
 </style>

@@ -1,33 +1,99 @@
 ---
+import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
+import PostCard from '../components/PostCard.astro';
+
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+const latestPosts = posts.slice(0, 3);
 ---
 
 <Layout>
-	<main>
-		<h1>旅ブログ</h1>
-		<p>国内旅行のモデルコースやグルメ、費用シミュレーションなどを綴っています。</p>
-		<a class="cta" href="/blog/">記事一覧を見る →</a>
+	<main id="main">
+		<section class="hero">
+			<p class="eyebrow">🧳 Domestic Travel Blog</p>
+			<h1>気ままな国内旅、ひとつずつ記録しています。</h1>
+			<p class="lead">ひとり旅と友達旅、どちらのペースも大切に。モデルコースからグルメ、費用の目安まで綴っています。</p>
+			<a class="cta" href="/blog/">記事一覧を見る →</a>
+		</section>
+
+		{latestPosts.length > 0 && (
+			<section class="latest">
+				<h2>最新の記事</h2>
+				<ul class="post-grid">
+					{latestPosts.map((post) => <PostCard post={post} />)}
+				</ul>
+			</section>
+		)}
 	</main>
 </Layout>
 
 <style>
 	main {
-		max-width: 720px;
+		max-width: 960px;
 		margin: 0 auto;
-		padding: 4rem 1rem;
-		font-family: system-ui, sans-serif;
+		padding: 0 1.25rem 4rem;
+	}
+
+	.hero {
 		text-align: center;
+		padding: 4rem 1rem 3.5rem;
+		background: linear-gradient(160deg, var(--color-bg-alt), var(--color-bg));
+		border-radius: var(--radius-lg);
+		margin: 2rem 0 3rem;
+	}
+
+	.eyebrow {
+		margin: 0 0 0.75rem;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		font-size: 0.8rem;
+		color: var(--color-sky);
+		font-weight: 700;
+	}
+
+	.hero h1 {
+		margin: 0 0 1rem;
+		font-size: clamp(1.6rem, 4vw, 2.4rem);
+		color: var(--color-accent-dark);
+	}
+
+	.lead {
+		margin: 0 auto 1.75rem;
+		max-width: 480px;
+		color: var(--color-text-muted);
 	}
 
 	.cta {
 		display: inline-block;
-		margin-top: 1.5rem;
-		color: #0057b8;
+		background: var(--color-accent);
+		color: #fff;
 		text-decoration: none;
-		font-weight: 600;
+		font-weight: 700;
+		padding: 0.85rem 2rem;
+		border-radius: 999px;
+		box-shadow: var(--shadow-sm);
+		transition: transform 0.15s ease, box-shadow 0.15s ease;
 	}
 
 	.cta:hover {
-		text-decoration: underline;
+		transform: translateY(-2px);
+		box-shadow: var(--shadow-md);
+	}
+
+	.latest h2 {
+		margin: 0 0 1.5rem;
+		font-size: 1.5rem;
+		color: var(--color-accent-dark);
+	}
+
+	.post-grid {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+		gap: 1.5rem;
 	}
 </style>
