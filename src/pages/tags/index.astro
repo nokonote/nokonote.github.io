@@ -1,0 +1,90 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+const posts = await getCollection('blog');
+const tagCounts = new Map<string, number>();
+for (const post of posts) {
+	for (const tag of post.data.tags) {
+		tagCounts.set(tag, (tagCounts.get(tag) ?? 0) + 1);
+	}
+}
+const tags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'ja'));
+---
+
+<Layout title="タグ一覧 | 旅ブログ" description="旅ブログの記事に付けられたタグの一覧です。気になるテーマから記事を探せます。">
+	<main id="main" data-pagefind-body>
+		<div class="page-header">
+			<h1>タグ一覧</h1>
+			<p>気になるテーマのタグから記事を探せます。</p>
+		</div>
+		<ul class="tag-list">
+			{tags.map(([tag, count]) => (
+				<li>
+					<a href={`/tags/${encodeURIComponent(tag)}/`}>
+						🏷️ {tag} <span class="count">{count}</span>
+					</a>
+				</li>
+			))}
+		</ul>
+	</main>
+</Layout>
+
+<style>
+	main {
+		max-width: 960px;
+		margin: 0 auto;
+		padding: 2.5rem 1.25rem 4rem;
+	}
+
+	.page-header {
+		text-align: center;
+		margin-bottom: 2.5rem;
+	}
+
+	.page-header h1 {
+		margin: 0 0 0.5rem;
+		font-size: 2rem;
+		color: var(--color-accent-dark);
+	}
+
+	.page-header p {
+		margin: 0;
+		color: var(--color-text-muted);
+	}
+
+	.tag-list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 0.75rem;
+	}
+
+	.tag-list a {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		text-decoration: none;
+		color: var(--color-accent-dark);
+		background: var(--color-surface);
+		border: 1px solid var(--color-border);
+		border-radius: 999px;
+		padding: 0.5rem 1.1rem;
+		font-weight: 500;
+		box-shadow: var(--shadow-sm);
+		transition: transform 0.15s ease, box-shadow 0.15s ease;
+	}
+
+	.tag-list a:hover {
+		transform: translateY(-2px);
+		box-shadow: var(--shadow-md);
+	}
+
+	.count {
+		color: var(--color-text-muted);
+		font-size: 0.8rem;
+	}
+</style>

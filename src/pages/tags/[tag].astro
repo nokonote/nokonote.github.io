@@ -1,0 +1,89 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import PostCard from '../../components/PostCard.astro';
+
+export async function getStaticPaths() {
+	const posts = await getCollection('blog');
+	const tags = [...new Set(posts.flatMap((post) => post.data.tags))];
+
+	return tags.map((tag) => {
+		const filtered = posts
+			.filter((post) => post.data.tags.includes(tag))
+			.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+		return {
+			params: { tag },
+			props: { tag, posts: filtered },
+		};
+	});
+}
+
+const { tag, posts } = Astro.props;
+---
+
+<Layout title={`「${tag}」の記事一覧 | 旅ブログ`} description={`「${tag}」タグが付いた記事の一覧です。`}>
+	<main id="main" data-pagefind-body>
+		<div class="page-header">
+			<p class="eyebrow">🏷️ タグ</p>
+			<h1>{tag}</h1>
+			<p>{posts.length}件の記事があります。</p>
+			<a class="back" href="/tags/">← タグ一覧に戻る</a>
+		</div>
+		<ul class="post-grid">
+			{posts.map((post) => <PostCard post={post} />)}
+		</ul>
+	</main>
+</Layout>
+
+<style>
+	main {
+		max-width: 960px;
+		margin: 0 auto;
+		padding: 2.5rem 1.25rem 4rem;
+	}
+
+	.page-header {
+		text-align: center;
+		margin-bottom: 2.5rem;
+	}
+
+	.eyebrow {
+		margin: 0 0 0.5rem;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		font-size: 0.8rem;
+		color: var(--color-sky);
+		font-weight: 700;
+	}
+
+	.page-header h1 {
+		margin: 0 0 0.5rem;
+		font-size: 2rem;
+		color: var(--color-accent-dark);
+	}
+
+	.page-header p {
+		margin: 0 0 0.75rem;
+		color: var(--color-text-muted);
+	}
+
+	.back {
+		display: inline-block;
+		font-size: 0.875rem;
+		color: var(--color-text-muted);
+		text-decoration: none;
+	}
+
+	.back:hover {
+		text-decoration: underline;
+	}
+
+	.post-grid {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+		gap: 1.5rem;
+	}
+</style>
