@@ -5,6 +5,7 @@ export const categoryLabels: Record<string, string> = {
 	packing: '持ち物・準備リスト',
 	gourmet: 'グルメ特集',
 	tips: '旅のTips',
+	onsen: '温泉特集',
 	essay: '体験談エッセイ',
 };
 
@@ -15,6 +16,7 @@ export const categoryIcons: Record<string, string> = {
 	packing: '🎒',
 	gourmet: '🍜',
 	tips: '💡',
+	onsen: '♨️',
 	essay: '📖',
 };
 
@@ -26,6 +28,7 @@ export const categoryColors: Record<string, { from: string; to: string }> = {
 	packing: { from: '#8B7FD6', to: '#B79EE8' },
 	gourmet: { from: '#F2545B', to: '#FF8A65' },
 	tips: { from: '#F2A93B', to: '#FFD166' },
+	onsen: { from: '#E8785C', to: '#F5A855' },
 	essay: { from: '#5C6BC0', to: '#8E9EE8' },
 };
 
