@@ -1,0 +1,78 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="ページが見つかりません | 旅ブログ" description="お探しのページは見つかりませんでした。">
+	<main id="main">
+		<div class="not-found">
+			<p class="emoji">🧭</p>
+			<h1>ページが見つかりません</h1>
+			<p>お探しのページは移動または削除された可能性があります。</p>
+			<div class="links">
+				<a class="cta" href="/">ホームに戻る</a>
+				<a href="/blog/">記事一覧を見る</a>
+				<a href="/search/">記事を検索する</a>
+			</div>
+		</div>
+	</main>
+</Layout>
+
+<style>
+	main {
+		max-width: 720px;
+		margin: 0 auto;
+		padding: 2.5rem 1.25rem 4rem;
+	}
+
+	.not-found {
+		text-align: center;
+		padding: 4rem 1rem;
+	}
+
+	.emoji {
+		font-size: 3rem;
+		margin: 0 0 1rem;
+	}
+
+	h1 {
+		margin: 0 0 0.75rem;
+		font-size: 1.75rem;
+		color: var(--color-accent-dark);
+	}
+
+	.not-found p:not(.emoji) {
+		margin: 0 0 2rem;
+		color: var(--color-text-muted);
+	}
+
+	.links {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 0.75rem;
+	}
+
+	.links a {
+		text-decoration: none;
+		color: var(--color-text-muted);
+		border: 1px solid var(--color-border);
+		border-radius: 999px;
+		padding: 0.6rem 1.5rem;
+		transition: background 0.15s ease;
+	}
+
+	.links a:hover {
+		background: var(--color-bg-alt);
+	}
+
+	.links .cta {
+		background: var(--color-accent);
+		color: #fff;
+		border-color: transparent;
+		font-weight: 700;
+	}
+
+	.links .cta:hover {
+		background: var(--color-accent-dark);
+	}
+</style>
