@@ -4,7 +4,7 @@ interface Props {
 	description?: string;
 }
 
-const { title = '旅ブログ', description = '国内旅行の記録をお届けするブログです。' } = Astro.props;
+const { title = '旅ブログ', description = 'モデルコースからグルメ、費用の目安まで、国内旅行の情報をお届けするブログです。' } = Astro.props;
 ---
 
 <!doctype html>
@@ -40,7 +40,7 @@ const { title = '旅ブログ', description = '国内旅行の記録をお届け
 		</header>
 		<slot />
 		<footer class="site-footer">
-			<p>🧳 旅ブログ ― 国内旅行の記録をゆるくお届けします。</p>
+			<p>🧳 旅ブログ ― 国内旅行の情報をゆるくお届けします。</p>
 		</footer>
 	</body>
 </html>
