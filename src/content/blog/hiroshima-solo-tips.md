@@ -24,16 +24,16 @@ heroImage:
 
 宮島行きフェリーは日中や夕方は混み合うので、朝一番の便がおすすめです。人が少ない大鳥居をゆっくり撮影できます。潮の満ち引きで見え方が変わるので、干満時刻を事前にチェックしておくと「海に浮かぶ鳥居」も「歩いて近づける鳥居」も狙えます。
 
-<figure class="post-image">
-  <img src="/images/blog/hiroshima-solo-tips/atomic-bomb-dome.jpg" alt="原爆ドームの外観" loading="lazy" />
-  <figcaption>📷 Photo by <a href="https://www.pexels.com/photo/historic-hiroshima-atomic-bomb-dome-in-ruins-31881263/">Dale Filhaber</a> on Pexels</figcaption>
-</figure>
-
 ## 🍽️ 一人でも入りやすいお好み焼き店の見分け方
 
 鉄板を囲むカウンター席がある店なら一人客でも気兼ねなく入れます。目の前で焼く様子を眺めながら食べられるので、一人でもむしろ楽しい時間に。お好み村や横丁系の店舗はカウンター中心で相席にも慣れているのでおすすめです。牡蠣料理店もコの字型の店構えを目印に選ぶと入りやすいです。
 
 ## 🕊️ 平和記念公園は予定を詰め込みすぎない
+
+<figure class="post-image">
+  <img src="/images/blog/hiroshima-solo-tips/atomic-bomb-dome.jpg" alt="原爆ドームの外観" loading="lazy" />
+  <figcaption>📷 Photo by <a href="https://www.pexels.com/photo/historic-hiroshima-atomic-bomb-dome-in-ruins-31881263/">Dale Filhaber</a> on Pexels</figcaption>
+</figure>
 
 原爆ドームや平和記念資料館を巡るときは、無理にスケジュールを詰めないことも大切です。一人旅だからこそ、慰霊碑の前で足を止めたり、資料館を出たあとベンチで気持ちを整理する時間を作れます。朝の早い時間帯は特に静かで、公園全体をゆっくり感じながら歩けます。
 
