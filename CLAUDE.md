@@ -96,6 +96,13 @@ astro dev --background
 
 `astro dev stop` / `astro dev status` / `astro dev logs` で管理する。
 
+### 検索機能（Pagefind）
+
+- `/search/` は [Pagefind](https://pagefind.app) を使ったクライアントサイド検索ページ
+- `npm run build`（`astro build` 実行後に `postbuild` スクリプトとして `pagefind --site dist` が自動実行される）でインデックスが生成される
+- `astro dev` では `dist/pagefind/` が存在しないため検索は動作しない（フォールバックメッセージが表示される）。検索の動作確認は `npm run build && npx astro preview` で行う
+- 記事の本文以外（ヘッダー・フッター・ナビ）を検索対象から除外するため、各ページの `<main>` に `data-pagefind-body` を付与している。新しいページを追加する際も同様に付与する
+
 ## ドキュメント
 
 Astro公式ドキュメント: https://docs.astro.build
