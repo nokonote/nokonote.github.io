@@ -20,6 +20,11 @@ heroImage:
 
 伊豆旅の定番といえば、東京駅から直通で走る特急「踊り子」号です。東京〜伊豆急下田間は片道で運賃・特急料金合わせておよそ5,500円前後（普通車指定席利用時）、往復で11,000円ほどが目安。節約したい場合は東海道新幹線で熱海まで行き、伊豆急行線やバスに乗り継ぐルートがおすすめで、こだま号自由席なら往復6,000〜8,000円程度に抑えられます。
 
+<figure class="post-image">
+  <img src="/images/blog/izu-solo-budget/atami-coast.jpg" alt="静岡県熱海の海岸線の風景" loading="lazy" />
+  <figcaption>📷 Photo by <a href="https://www.pexels.com/photo/scenic-coastal-view-of-atami-japan-33347958/">Ashar Mirza</a> on Pexels</figcaption>
+</figure>
+
 現地での移動は伊豆急行線やバス、レンタサイクルの組み合わせが定番です。1泊2日なら現地交通費は2,000〜3,000円ほど見ておくと安心。バス移動が多いプランなら「伊豆フリー乗車券」のような周遊きっぷを使うとお得です。
 
 ## 🏨 宿泊費：8,000〜25,000円
@@ -27,11 +32,6 @@ heroImage:
 伊豆は宿の選択肢が非常に幅広いエリアです。素泊まりのビジネスホテルやゲストハウスなら6,000〜9,000円台、朝食付きの民宿やペンションなら8,000〜12,000円ほどが相場。少し贅沢したいなら、部屋食付きの温泉旅館で1泊2食付き15,000〜25,000円という選択肢もあります。
 
 最近は一人旅プランや女性向けプランを用意する宿も増え、繁忙期でなければ平日1万円前後で温泉付きの部屋に泊まれることも珍しくありません。宿泊費は予算全体を大きく左右するので、まず自分がどこまで快適さにお金をかけたいかを決めておくと計画が立てやすくなります。
-
-<figure class="post-image">
-  <img src="/images/blog/izu-solo-budget/atami-coast.jpg" alt="静岡県熱海の海岸線の風景" loading="lazy" />
-  <figcaption>📷 Photo by <a href="https://www.pexels.com/photo/scenic-coastal-view-of-atami-japan-33347958/">Ashar Mirza</a> on Pexels</figcaption>
-</figure>
 
 ## 🍽️ 食費：4,000〜7,000円
 

@@ -32,11 +32,6 @@ heroImage:
 
 明神池は穂高神社奥宮の境内にあり、拝観料を納めて入ると一之池・二之池と呼ばれる2つの池が現れます。水面はどこまでも澄んでいて、風がやむと周囲の木々を鏡のように映し込みます。ベンチに座ってゆっくり池を眺める時間を、行程に組み込んでおくのがおすすめです。
 
-<figure class="post-image">
-  <img src="/images/blog/nagano-solo-summer/kamikochi-mist.jpg" alt="朝霧に包まれた上高地の山と水面に映る景色" loading="lazy" />
-  <figcaption>📷 Photo by <a href="https://www.pexels.com/photo/tranquil-morning-mist-over-kamikochi-mountains-33286871/">Miwa</a> on Pexels</figcaption>
-</figure>
-
 ### 🍜 昼食：山小屋でそばと岩魚
 
 遊歩道沿いの山小屋では、信州そばと岩魚の塩焼きが名物です。冷たい湧き水で締められたそばと、香ばしく焼き上がった岩魚は、歩き疲れた体に染み渡るおいしさなので、ハイキングの合間にぜひ立ち寄ってみてください。
@@ -50,6 +45,11 @@ heroImage:
 ### 🌤️ 早朝：大正池で朝霧を眺める
 
 宿を早めに出て、2日目は大正池からスタートします。朝靄が水面に立ち込め、鏡のように穂高の山並みを映し込む様子は、上高地でも屈指の絶景です。観光客がまばらな早朝の時間帯を狙うと、静けさの中でじっくり景色を楽しめます。
+
+<figure class="post-image">
+  <img src="/images/blog/nagano-solo-summer/kamikochi-mist.jpg" alt="朝霧に包まれた上高地の山と水面に映る景色" loading="lazy" />
+  <figcaption>📷 Photo by <a href="https://www.pexels.com/photo/tranquil-morning-mist-over-kamikochi-mountains-33286871/">Miwa</a> on Pexels</figcaption>
+</figure>
 
 ### 🌾 午前：田代湿原を散策
 
