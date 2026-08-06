@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
+import PostCard from '../../components/PostCard.astro';
 import { categoryLabels, categoryIcons, categoryColors, tripStyleLabels, tripStyleIcons, formatDate } from '../../utils/blog';
 
 export async function getStaticPaths() {
@@ -13,6 +14,19 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+
+const allPosts = await getCollection('blog');
+const relatedPosts = allPosts
+	.filter((other) => other.id !== post.id)
+	.map((other) => {
+		const sameCategory = other.data.category === post.data.category ? 2 : 0;
+		const sharedTags = other.data.tags.filter((tag) => post.data.tags.includes(tag)).length;
+		return { post: other, score: sameCategory + sharedTags };
+	})
+	.filter((entry) => entry.score > 0)
+	.sort((a, b) => b.score - a.score || b.post.data.pubDate.valueOf() - a.post.data.pubDate.valueOf())
+	.slice(0, 3)
+	.map((entry) => entry.post);
 const colors = categoryColors[post.data.category];
 const hero = post.data.heroImage;
 const heroStyle = hero
@@ -21,7 +35,7 @@ const heroStyle = hero
 ---
 
 <Layout title={`${post.data.title} | 旅ブログ`} description={post.data.description}>
-	<main id="main">
+	<main id="main" data-pagefind-body>
 		<article>
 			<header class:list={['hero', { 'has-photo': hero }]} style={heroStyle}>
 				<div class="hero-inner">
@@ -43,12 +57,22 @@ const heroStyle = hero
 			<div class="content-wrap">
 				{post.data.tags.length > 0 && (
 					<p class="tags">
-						{post.data.tags.map((tag) => <span class="tag">🏷️ {tag}</span>)}
+						{post.data.tags.map((tag) => <a class="tag" href={`/tags/${encodeURIComponent(tag)}/`}>🏷️ {tag}</a>)}
 					</p>
 				)}
 				<div class="content">
 					<Content />
 				</div>
+
+				{relatedPosts.length > 0 && (
+					<section class="related">
+						<h2>🧭 関連記事</h2>
+						<ul class="related-grid">
+							{relatedPosts.map((relatedPost) => <PostCard post={relatedPost} />)}
+						</ul>
+					</section>
+				)}
+
 				<p class="back back-bottom"><a href="/blog/">🗺️ 記事一覧に戻る</a></p>
 			</div>
 		</article>
@@ -149,6 +173,32 @@ const heroStyle = hero
 		background: var(--color-bg-alt);
 		border-radius: 999px;
 		padding: 0.15rem 0.7rem;
+		text-decoration: none;
+		transition: background 0.15s ease;
+	}
+
+	.tag:hover {
+		background: var(--color-border);
+	}
+
+	.related {
+		margin-top: 3.5rem;
+	}
+
+	.related h2 {
+		margin: 0 0 1.25rem;
+		padding-left: 0.85rem;
+		border-left: 6px solid var(--color-accent);
+		font-size: 1.4rem;
+	}
+
+	.related-grid {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+		gap: 1.25rem;
 	}
 
 	.content {
