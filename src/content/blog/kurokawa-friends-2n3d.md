@@ -105,8 +105,8 @@ heroImage:
 黒川温泉では例年1月下旬から2月頃にかけて、「湯あかり」という冬季限定のライトアップイベントが開催されます。温泉街の路地や周辺の田んぼ道に、竹細工や和紙で作られた手作りの灯籠がずらりと並べられ、ろうそくのやわらかい明かりが雪景色を照らし出す、幻想的な光景が広がります。ふだんの提灯の明かりとはまた違う、その時期だけの特別な雰囲気を味わえるので、冬に黒川温泉を訪れるなら夕食後の散策コースに組み込んでみてください。開催期間や点灯時間は年によって変わることがあるので、訪問前に黒川温泉観光旅館協同組合など公式の最新情報を確認しておくと安心です。
 
 <figure class="post-image">
-  <img src="/images/blog/kurokawa-friends-2n3d/yuakari-snow-lanterns.jpg" alt="雪の中に並ぶ灯籠のあたたかい明かり" loading="lazy" />
-  <figcaption>📷 Photo by <a href="https://www.pexels.com/photo/snow-covered-lanterns-with-warm-glow-30546929/">Lara</a> on Pexels</figcaption>
+  <img src="/images/blog/kurokawa-friends-2n3d/yuakari-riverside-lanterns.jpg" alt="川沿いに灯籠の明かりが映り込む温泉街の夜景" loading="lazy" />
+  <figcaption>📷 Photo by <a href="https://www.pexels.com/photo/serene-nightscape-by-lantern-lit-river-38512919/">木 灬</a> on Pexels</figcaption>
 </figure>
 
 ## ✨ まとめ
