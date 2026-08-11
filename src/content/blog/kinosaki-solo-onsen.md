@@ -25,8 +25,8 @@ heroImage:
 城崎温泉の名物は、7つの外湯をめぐる「外湯めぐり」です。各外湯の窓口で購入できる湯めぐりパス「ゆめぱ」（大人1,500円、小人750円）を使えば、7湯すべてに何度でも入浴できます。営業時間はおおむね7時から23時（最終受付は閉館30分前）で、1湯あたりの所要時間は30分〜1時間ほど。すべてを回ろうとすると忙しくなってしまうので、一人旅なら気になる2〜3湯をゆっくり選び、湯めぐりの合間にカフェや射的店に立ち寄る、というくらいのペースがちょうどよいでしょう。
 
 <figure class="post-image">
-  <img src="/images/blog/kinosaki-solo-onsen/yukata.jpg" alt="浴衣姿で庭園の池のほとりを歩く様子" loading="lazy" />
-  <figcaption>📷 Photo by <a href="https://www.pexels.com/photo/a-young-girl-in-traditional-japanese-clothing-is-standing-on-a-bridge-27518313/">Kofne Ramone</a> on Pexels</figcaption>
+  <img src="/images/blog/kinosaki-solo-onsen/toyooka-house.jpg" alt="城崎温泉がある兵庫県豊岡市の、柿の木がある伝統的な木造家屋" loading="lazy" />
+  <figcaption>📷 Photo by <a href="https://www.pexels.com/photo/persimmon-tree-in-front-of-a-traditional-house-in-toyooka-japan-34613911/">Bean JP</a> on Pexels</figcaption>
 </figure>
 
 ## 🚃 大阪・京都からのアクセス
