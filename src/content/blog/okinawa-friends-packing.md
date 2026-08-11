@@ -14,7 +14,7 @@ heroImage:
     source: "Pexels"
 ---
 
-友達と沖縄旅行に行くとなると、ビーチもアクティビティも観光もと予定が盛りだくさんになりがちです。当日バタバタしないように、出発前にサクッと確認できる持ち物リストをまとめました。
+友達と沖縄旅行に行くとなると、ビーチもアクティビティも観光もと予定が盛りだくさんになりがちです。当日バタバタしないように、出発前にサクッと確認できる持ち物リストをご紹介します。
 
 <figure class="post-image">
   <img src="/images/blog/okinawa-friends-packing/packing-suitcase.jpg" alt="ビーチグッズを詰めたスーツケースと麦わら帽子" loading="lazy" />
