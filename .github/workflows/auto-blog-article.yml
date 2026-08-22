@@ -78,6 +78,11 @@ jobs:
               （例: ffmpeg -i input.jpg -vf "scale='min(1600,iw)':-2" -q:v 4 output.jpg）。
               場所に厳密に合致する写真が見つからない場合は、無理に追加せず
               heroImageのみ、または本文中で使い回すこと。
+            - 候補として複数枚ダウンロード・リサイズしても構わないが、最終的に
+              Markdown内（frontmatterのheroImage.srcまたは<img src>）から実際に
+              参照されなかった画像ファイルは、作業完了前に必ず削除すること。
+              public/images/blog/<slug>/ に残すのは記事から参照されるファイルのみとし、
+              .keep 等のプレースホルダーファイルも残さないこと。
             - pubDate は "${{ steps.now.outputs.today }}T09:00:00+09:00" を使用すること。
             - 変更してよいファイルは、新規に作成する src/content/blog/ 配下の
               Markdownファイル1つと、public/images/blog/<slug>/ 配下の新規画像ファイルのみ。
@@ -119,6 +124,20 @@ jobs:
                 ;;
             esac
           done
+
+      - name: Remove images not referenced by the article
+        if: steps.detect.outputs.created == 'true'
+        run: |
+          article="${{ steps.detect.outputs.file }}"
+          new_images=$(git status --porcelain -- public/images/blog | awk '{print $2}')
+          for img in $new_images; do
+            base=$(basename "$img")
+            if ! grep -qF "$base" "$article"; then
+              echo "::warning::Removing image not referenced by the article: $img"
+              rm -f "$img"
+            fi
+          done
+          find public/images/blog -type d -empty -delete
 
       - name: Install dependencies
         if: steps.detect.outputs.created == 'true'
