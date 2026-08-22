@@ -9,7 +9,7 @@ name: Auto-generate Blog Article
 
 on:
   schedule:
-    - cron: "0 21 * * *" # 06:00 JST daily
+    - cron: "0 21 * * 2,6" # 06:00 JST 毎週水・日 (UTC火・土 21:00)
   workflow_dispatch:
     inputs:
       category:
