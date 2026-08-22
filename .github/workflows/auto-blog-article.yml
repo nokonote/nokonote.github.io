@@ -1,0 +1,157 @@
+name: Auto-generate Blog Article
+
+# Claude Code (headless mode) writes one new blog article per run, following
+# CLAUDE.md's rules (category balance, fact-checking, image sourcing/sizing,
+# frontmatter schema). Claude only creates files — it never runs git itself.
+# This workflow then validates the result (path scope + build), commits it to
+# a new branch, pushes, and opens a PR for a human to review and merge.
+# Nothing is ever pushed to main and nothing is ever auto-merged.
+
+on:
+  schedule:
+    - cron: "0 21 * * *" # 06:00 JST daily
+  workflow_dispatch:
+    inputs:
+      category:
+        description: "カテゴリを指定する場合のみ入力 (spot/itinerary/budget/packing/gourmet/tips/onsen/essay)。空欄なら自動選定。"
+        required: false
+        type: string
+      note:
+        description: "エリア・切り口などの追加指示（任意）"
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+  id-token: write
+
+concurrency:
+  group: auto-blog-article
+  cancel-in-progress: false
+
+jobs:
+  generate-article:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Ensure ffmpeg is available
+        run: command -v ffmpeg || (sudo apt-get update && sudo apt-get install -y ffmpeg)
+
+      - name: Compute today's date (JST)
+        id: now
+        run: echo "today=$(TZ=Asia/Tokyo date +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
+
+      - name: Generate article with Claude Code
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          claude_args: |
+            --max-turns 80
+            --model claude-sonnet-5
+            --allowedTools "Read,Write,Edit,Glob,Grep,WebSearch,WebFetch,Bash(ffmpeg *),Bash(curl *)"
+          prompt: |
+            新しいブログ記事を1つ作成してください。この作業はリポジトリルートの CLAUDE.md
+            に記載された全ルールに厳密に従うこと。特に以下を必ず守ってください。
+
+            - 執筆前に src/content/blog/ 内の既存記事の title・category・エリアを確認し、
+              テーマの重複を避けること。カテゴリは既存記事の内訳を集計し、目標配分より
+              実際の比率が低いカテゴリを優先すること。
+            - 文体・分量・フロントマター仕様は CLAUDE.md の「記事のルール」に従うこと。
+            - 検証可能な事実（営業時間・料金・アクセス所要時間・歴史的事実など）は
+              WebSearch で必ず裏取りし、裏付けが取れない場合は断定的な数値を書かず
+              「〜円程度」「〜時間ほど」のような相場感の表現にとどめること。
+            - 画像は Pexels から、記事の舞台に実際に関係する写真のみを使用すること。
+              curl でダウンロードしたら、必ず ffmpeg で幅1600px以下・1枚あたり数百KB程度に
+              リサイズしてから public/images/blog/<slug>/ に保存すること
+              （例: ffmpeg -i input.jpg -vf "scale='min(1600,iw)':-2" -q:v 4 output.jpg）。
+              場所に厳密に合致する写真が見つからない場合は、無理に追加せず
+              heroImageのみ、または本文中で使い回すこと。
+            - pubDate は "${{ steps.now.outputs.today }}T09:00:00+09:00" を使用すること。
+            - 変更してよいファイルは、新規に作成する src/content/blog/ 配下の
+              Markdownファイル1つと、public/images/blog/<slug>/ 配下の新規画像ファイルのみ。
+              それ以外の既存ファイル（他の記事、設定ファイル、ワークフローファイルなど）は
+              一切変更・削除しないこと。
+            - git のコマンド（add / commit / push など）は絶対に実行しないこと。
+              ファイルの作成のみを行い、バージョン管理はこのあとのワークフロー側のステップで行う。
+
+            ${{ github.event.inputs.category && format('カテゴリ指定: {0}', github.event.inputs.category) || '' }}
+            ${{ github.event.inputs.note && format('追加指示: {0}', github.event.inputs.note) || '' }}
+
+            作業が完了したら、作成したMarkdownファイルのパスと記事タイトルを
+            最後に要約として出力してください。
+
+      - name: Detect generated article
+        id: detect
+        run: |
+          new_file=$(git status --porcelain -- src/content/blog | awk '{print $2}' | head -n1)
+          if [ -z "$new_file" ]; then
+            echo "::warning::No new article file was created; skipping commit/PR."
+            echo "created=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "created=true" >> "$GITHUB_OUTPUT"
+          echo "file=$new_file" >> "$GITHUB_OUTPUT"
+          title=$(grep -m1 '^title:' "$new_file" | sed -E 's/^title: *"?//; s/"?$//')
+          echo "title=$title" >> "$GITHUB_OUTPUT"
+
+      - name: Ensure only allowed paths changed
+        if: steps.detect.outputs.created == 'true'
+        run: |
+          changed=$(git status --porcelain | awk '{print $2}')
+          for f in $changed; do
+            case "$f" in
+              src/content/blog/*|public/images/blog/*) ;;
+              *)
+                echo "::error::Unexpected file changed outside allowed paths: $f"
+                exit 1
+                ;;
+            esac
+          done
+
+      - name: Install dependencies
+        if: steps.detect.outputs.created == 'true'
+        run: npm ci
+
+      - name: Build to validate the new article
+        if: steps.detect.outputs.created == 'true'
+        run: npm run build
+
+      - name: Commit, push, and open PR
+        if: steps.detect.outputs.created == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          branch="auto/article-$(TZ=Asia/Tokyo date +%Y%m%d-%H%M%S)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$branch"
+          git add src/content/blog public/images/blog
+          git commit -m "feat: ${{ steps.detect.outputs.title }} の記事を追加"
+          git push origin "$branch"
+          gh pr create \
+            --title "feat: ${{ steps.detect.outputs.title }}" \
+            --body "Claude Code (headless) が自動生成した新規ブログ記事です。マージ前に内容・事実関係・画像の妥当性を必ずレビューしてください。" \
+            --base main \
+            --head "$branch"
+
+      - name: Log failure reason
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true
+        run: |
+          gh issue create \
+            --title "🤖 自動記事生成が失敗しました ($(TZ=Asia/Tokyo date +%Y-%m-%d))" \
+            --body "$(printf 'ワークフロー実行ログ: %s/%s/actions/runs/%s\n\n原因を確認し、必要であれば手動で記事を作成してください。' "${{ github.server_url }}" "${{ github.repository }}" "${{ github.run_id }}")"
