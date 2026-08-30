@@ -60,7 +60,7 @@ jobs:
           claude_args: |
             --max-turns 120
             --model claude-sonnet-5
-            --allowedTools "Read,Glob,Grep,WebSearch,WebFetch,Bash(ffmpeg *),Bash(curl *),Edit(src/content/blog/**),Edit(public/images/blog/**)"
+            --allowedTools "Read,Glob,Grep,WebSearch,WebFetch,Bash(ffmpeg *),Bash(curl *),Write(src/content/blog/**),Write(public/images/blog/**),Edit(src/content/blog/**),Edit(public/images/blog/**)"
           prompt: |
             新しいブログ記事を1つ作成してください。この作業はリポジトリルートの CLAUDE.md
             に記載された全ルールに厳密に従うこと。特に以下を必ず守ってください。
