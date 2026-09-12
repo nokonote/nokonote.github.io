@@ -103,7 +103,7 @@ jobs:
       - name: Detect generated article
         id: detect
         run: |
-          new_file=$(git status --porcelain -- src/content/blog | awk '{print $2}' | head -n1)
+          new_file=$(git status --porcelain -uall -- src/content/blog | awk '{print $2}' | head -n1)
           if [ -z "$new_file" ]; then
             echo "::warning::No new article file was created; skipping commit/PR."
             echo "created=false" >> "$GITHUB_OUTPUT"
@@ -117,7 +117,7 @@ jobs:
       - name: Ensure only allowed paths changed
         if: steps.detect.outputs.created == 'true'
         run: |
-          changed=$(git status --porcelain | awk '{print $2}')
+          changed=$(git status --porcelain -uall | awk '{print $2}')
           for f in $changed; do
             case "$f" in
               src/content/blog/*|public/images/blog/*) ;;
@@ -132,7 +132,7 @@ jobs:
         if: steps.detect.outputs.created == 'true'
         run: |
           article="${{ steps.detect.outputs.file }}"
-          new_images=$(git status --porcelain -- public/images/blog | awk '{print $2}')
+          new_images=$(git status --porcelain -uall -- public/images/blog | awk '{print $2}')
           for img in $new_images; do
             base=$(basename "$img")
             if ! grep -qF "$base" "$article"; then
